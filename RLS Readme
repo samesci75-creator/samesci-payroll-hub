@@ -1,0 +1,7 @@
+Row-Level Security (RLS) Impénétrable 🔐
+
+La base de données Supabase refuse désormais formellement d'envoyer (ou de modifier)
+des données à quelqu'un qui n'en a pas le droit explicite. 
+Même si un pirate arrivait à contourner le code React, 
+la base de données l'empêcherait de lire le personnel 
+ou les pointages d'un chantier qui ne lui appartient pas. 

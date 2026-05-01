@@ -1,0 +1,169 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+@layer base {
+  :root {
+    --background: 210 20% 98%;
+    --foreground: 220 30% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 30% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 30% 12%;
+
+    --primary: 35 95% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 50% 18%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 210 20% 94%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 35 90% 95%;
+    --accent-foreground: 35 95% 30%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 35 95% 50%;
+
+    --radius: 0.625rem;
+
+    --sidebar-background: 220 50% 14%;
+    --sidebar-foreground: 210 20% 90%;
+    --sidebar-primary: 35 95% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 45% 20%;
+    --sidebar-accent-foreground: 210 20% 90%;
+    --sidebar-border: 220 40% 22%;
+    --sidebar-ring: 35 95% 50%;
+
+    --success: 142 72% 42%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+
+    /* SAMES Branding */
+    --sames-red: 0 84% 60%;
+    --sames-blue: 229 21% 45%;
+  }
+
+  .dark {
+    --background: 220 30% 8%;
+    --foreground: 210 20% 95%;
+
+    --card: 220 30% 12%;
+    --card-foreground: 210 20% 95%;
+
+    --popover: 220 30% 12%;
+    --popover-foreground: 210 20% 95%;
+
+    --primary: 0 84% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 229 21% 30%;
+    --secondary-foreground: 210 20% 95%;
+
+    --muted: 220 25% 18%;
+    --muted-foreground: 215 16% 60%;
+
+    --accent: 0 84% 15%;
+    --accent-foreground: 0 84% 80%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 25% 20%;
+    --input: 220 25% 20%;
+    --ring: 0 84% 60%;
+
+    --sidebar-background: 220 35% 8%;
+    --sidebar-foreground: 210 20% 85%;
+    --sidebar-primary: 0 84% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 30% 14%;
+    --sidebar-accent-foreground: 210 20% 85%;
+    --sidebar-border: 220 25% 16%;
+    --sidebar-ring: 0 84% 60%;
+
+    --success: 142 72% 42%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+
+    --sames-red: 0 84% 60%;
+    --sames-blue: 229 21% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+}
+
+@layer utilities {
+  .animate-shimmer {
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  .pulse-glow {
+    animation: pulse-glow 2s infinite ease-in-out;
+  }
+
+  .animate-water-wave {
+    animation: water-wave 8s infinite linear;
+  }
+
+  .animate-radio-signal {
+    animation: radio-signal 2s infinite ease-out;
+  }
+
+  .playful-section-hover {
+    @apply transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/10 cursor-pointer active:scale-95;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 5px rgba(211, 47, 47, 0.2); }
+    50% { box-shadow: 0 0 20px rgba(211, 47, 47, 0.6); }
+  }
+
+  @keyframes water-wave {
+    0% { transform: translateX(0) translateZ(0) scaleY(1); }
+    50% { transform: translateX(-5%) translateZ(0) scaleY(1.05); }
+    100% { transform: translateX(0) translateZ(0) scaleY(1); }
+  }
+
+  @keyframes radio-signal {
+    0% { opacity: 0.3; stroke-width: 2px; }
+    50% { opacity: 1; stroke-width: 4px; }
+    100% { opacity: 0.3; stroke-width: 2px; }
+  }
+
+  .premium-hover {
+    @apply transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] hover:shadow-xl;
+  }
+}
