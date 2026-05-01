@@ -198,53 +198,123 @@ const UsersPage = () => {
           ) : users.length === 0 ? (
             <p className="text-center text-muted-foreground py-8">Aucun utilisateur trouvé.</p>
           ) : (
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Nom</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Rôle actuel</TableHead>
-                    <TableHead>Modifier le rôle</TableHead>
-                    <TableHead>Chantier Assigné</TableHead>
-                    <TableHead className="w-[80px]">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {users.map(u => (
-                    <TableRow key={u.id}>
-                      <TableCell className="font-medium">{u.nom || '—'}</TableCell>
-                      <TableCell className="text-muted-foreground">{u.email}</TableCell>
-                      <TableCell>
-                        {u.role ? (
-                          <Badge variant={roleBadgeVariant[u.role]}>{roleLabelsMap[u.role]}</Badge>
-                        ) : (
-                          <span className="text-xs text-muted-foreground italic">Aucun rôle</span>
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Select
-                            value={u.role || ''}
-                            onValueChange={(val) => handleRoleChange(u.id, val as UserRole)}
-                            disabled={saving === u.id}
-                          >
-                            <SelectTrigger className="w-[180px]">
-                              <SelectValue placeholder="Choisir un rôle" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="admin">Admin RH</SelectItem>
-                              <SelectItem value="chef_chantier">Chef de Chantier</SelectItem>
-                              <SelectItem value="directeur">Directeur des Travaux</SelectItem>
-                              <SelectItem value="caisse">Caisse</SelectItem>
-                              <SelectItem value="en_attente">En attente (Bloqué)</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        {['chef_chantier', 'directeur', 'admin'].includes(u.role as string) ? (
+            <>
+              {/* Desktop View (Table) */}
+              <div className="hidden md:block overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Nom</TableHead>
+                      <TableHead>Email</TableHead>
+                      <TableHead>Rôle actuel</TableHead>
+                      <TableHead>Modifier le rôle</TableHead>
+                      <TableHead>Chantier Assigné</TableHead>
+                      <TableHead className="w-[80px]">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {users.map(u => (
+                      <TableRow key={u.id}>
+                        <TableCell className="font-medium">{u.nom || '—'}</TableCell>
+                        <TableCell className="text-muted-foreground">{u.email}</TableCell>
+                        <TableCell>
+                          {u.role ? (
+                            <Badge variant={roleBadgeVariant[u.role]}>{roleLabelsMap[u.role]}</Badge>
+                          ) : (
+                            <span className="text-xs text-muted-foreground italic">Aucun rôle</span>
+                          )}
+                        </TableCell>
+                        <TableCell>
                           <div className="flex items-center gap-2">
+                            <Select
+                              value={u.role || ''}
+                              onValueChange={(val) => handleRoleChange(u.id, val as UserRole)}
+                              disabled={saving === u.id}
+                            >
+                              <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Choisir un rôle" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="admin">Admin RH</SelectItem>
+                                <SelectItem value="chef_chantier">Chef de Chantier</SelectItem>
+                                <SelectItem value="directeur">Directeur des Travaux</SelectItem>
+                                <SelectItem value="caisse">Caisse</SelectItem>
+                                <SelectItem value="en_attente">En attente (Bloqué)</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          {['chef_chantier', 'directeur', 'admin'].includes(u.role as string) ? (
+                            <div className="flex items-center gap-2">
+                              <Input
+                                defaultValue={u.chantier_assigne === '*' ? 'TOUS' : (u.chantier_assigne || '')}
+                                onBlur={e => {
+                                  const val = e.target.value.toUpperCase() === 'TOUS' ? '*' : e.target.value;
+                                  if (val !== (u.chantier_assigne || '')) {
+                                    handleChantierChange(u.id, val);
+                                  }
+                                }}
+                                placeholder="Ex: Chantier A, Chantier B (ou TOUS)"
+                                className="h-8 w-[140px] text-xs"
+                                disabled={saving === u.id}
+                              />
+                              {saving === u.id && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />}
+                            </div>
+                          ) : (
+                            <span className="text-xs text-muted-foreground italic">—</span>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:bg-destructive/10" onClick={() => setDeleting(u)}>
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+
+              {/* Mobile View (Cards) */}
+              <div className="md:hidden space-y-4">
+                {users.map(u => (
+                  <div key={u.id} className="border rounded-lg p-4 space-y-4 bg-muted/10">
+                    <div className="flex justify-between items-start">
+                      <div className="space-y-1">
+                        <p className="font-bold text-base leading-none">{u.nom || '—'}</p>
+                        <p className="text-xs text-muted-foreground">{u.email}</p>
+                      </div>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive -mt-2 -mr-2" onClick={() => setDeleting(u)}>
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-1.5">
+                        <Label className="text-[10px] uppercase text-muted-foreground font-bold tracking-wider">Rôle</Label>
+                        <Select
+                          value={u.role || ''}
+                          onValueChange={(val) => handleRoleChange(u.id, val as UserRole)}
+                          disabled={saving === u.id}
+                        >
+                          <SelectTrigger className="h-9 text-xs">
+                            <SelectValue placeholder="Rôle" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="admin">Admin RH</SelectItem>
+                            <SelectItem value="chef_chantier">Chef de Chantier</SelectItem>
+                            <SelectItem value="directeur">Directeur des Travaux</SelectItem>
+                            <SelectItem value="caisse">Caisse</SelectItem>
+                            <SelectItem value="en_attente">En attente (Bloqué)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <Label className="text-[10px] uppercase text-muted-foreground font-bold tracking-wider">Affectation</Label>
+                        {['chef_chantier', 'directeur', 'admin'].includes(u.role as string) ? (
+                          <div className="relative">
                             <Input
                               defaultValue={u.chantier_assigne === '*' ? 'TOUS' : (u.chantier_assigne || '')}
                               onBlur={e => {
@@ -253,26 +323,27 @@ const UsersPage = () => {
                                   handleChantierChange(u.id, val);
                                 }
                               }}
-                              placeholder="Ex: Chantier A, Chantier B (ou TOUS)"
-                              className="h-8 w-[140px] text-xs"
+                              placeholder="TOUS ou Nom"
+                              className="h-9 text-xs pr-8"
                               disabled={saving === u.id}
                             />
-                            {saving === u.id && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />}
+                            {saving === u.id && (
+                              <div className="absolute right-2 top-2.5">
+                                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                              </div>
+                            )}
                           </div>
                         ) : (
-                          <span className="text-xs text-muted-foreground italic">—</span>
+                          <div className="h-9 flex items-center bg-muted/20 rounded border border-transparent">
+                            <span className="text-[10px] text-muted-foreground italic px-2">Aucune</span>
+                          </div>
                         )}
-                      </TableCell>
-                      <TableCell>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:bg-destructive/10" onClick={() => setDeleting(u)}>
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
           )}
         </CardContent>
       </Card>
