@@ -177,14 +177,12 @@ const ValidationPage = () => {
     <AppLayout>
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <div className="flex items-center gap-3 mb-1">
-            <div className="h-10 w-10 bg-white rounded-xl shadow-inner p-1">
-              <img src="/logo.png" alt="SAMES Logo" className="h-full w-full object-contain" />
-            </div>
-            <h1 className="text-2xl font-bold tracking-tight">Validation des Pointages</h1>
-          </div>
-          <p className="text-muted-foreground ml-[52px]">Espace Directeur des Travaux</p>
-          <div className="mt-2 flex flex-wrap gap-3 text-xs text-muted-foreground ml-[52px]">
+            <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+              <ShieldCheck className="h-6 w-6 text-primary" />
+              Validation des Pointages
+            </h1>
+          <p className="text-muted-foreground">Espace Directeur des Travaux</p>
+          <div className="mt-2 flex flex-wrap gap-3 text-xs text-muted-foreground">
             <span><strong className="text-blue-500">T</strong> = Travail (100%)</span>
             <span><strong className="text-violet-500">V</strong> = Voyage (50%)</span>
             <span><strong className="text-red-500">A</strong> = Arrêt (50%)</span>
